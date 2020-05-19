@@ -36,3 +36,7 @@
     background-image: url(images/arrow-down.png);
     color: transparent!important;
 }
+.side .flex-viewport {
+    height: 600px!important;
+    margin-top: 20px;
+}
