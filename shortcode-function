@@ -1,0 +1,120 @@
+//place in your functions.php
+
+function featured_function() {
+	
+$args = array(
+	'posts_per_page' => -1,
+	'post_type'      => 'product',
+	'post_status'    => 'publish',
+	'tax_query'      => array(
+		array(
+			'taxonomy' => 'product_visibility',
+			'field'    => 'name',
+			'terms'    => 'featured',
+			'operator' => 'IN',
+			),
+		)  
+);
+$featured_product = new WP_Query( $args );
+
+if ( $featured_product->have_posts() ) : 
+
+echo '<div class="flexslider2 carousel side"><ul class="slides">';
+
+while ( $featured_product->have_posts() ) : $featured_product->the_post();
+
+$post_thumbnail_id     = get_post_thumbnail_id();
+$product_thumbnail     = wp_get_attachment_image_src($post_thumbnail_id, $size = 'shop-feature');
+$product_thumbnail_alt = get_post_meta( $post_thumbnail_id, '_wp_attachment_image_alt', true );
+	$product = wc_get_product();
+	$brand = get_the_terms( $post->ID, 'product_cat' );
+
+?>
+
+	<li>
+		<a href="<?php the_permalink();?>">
+			<img src="<?php echo $product_thumbnail[0];?>" alt="<?php echo $product_thumbnail_alt;?>">
+			<h4 class="brand-name"><?php echo $brand[0]->name;?></h4>
+			<h6 class="product-title"><?php the_title();?></h6>
+			<h6 class="product-title">$<?php echo $product->get_price();?></h6>
+		</a>    
+	</li>
+<?php 
+endwhile; 
+
+echo '</ul></div>';
+
+endif; 
+		
+ wp_reset_query();
+
+
+}
+add_shortcode('featured-slider', 'featured_function');
+
+
+
+function sale_function() {
+	
+$args = array(
+	'posts_per_page' => -1,
+	'post_type'      => 'product',
+	'post_status'    => 'publish',
+	'meta_query'     => array(
+                    'relation' => 'OR',
+                    array( // Simple products type
+                        'key'           => '_sale_price',
+                        'value'         => 0,
+                        'compare'       => '>',
+                        'type'          => 'numeric'
+                    ),
+                    array( // Variable products type
+                        'key'           => '_min_variation_sale_price',
+                        'value'         => 0,
+                        'compare'       => '>',
+                        'type'          => 'numeric'
+                    )
+		)  
+);
+$sale_product = new WP_Query( $args );
+
+if ( $sale_product->have_posts() ) : 
+
+echo '<div class="flexslider2 carousel side mobile-sale"><ul class="slides">';
+
+while ( $sale_product->have_posts() ) : $sale_product->the_post();
+
+$post_thumbnail_id     = get_post_thumbnail_id();
+$product_thumbnail     = wp_get_attachment_image_src($post_thumbnail_id, $size = 'shop-feature');
+$product_thumbnail_alt = get_post_meta( $post_thumbnail_id, '_wp_attachment_image_alt', true );
+	$product = wc_get_product();
+	$brand = get_the_terms( $post->ID, 'product_cat' );
+	$regular_price = $product->get_regular_price();
+	$sale_price = $product->get_sale_price();
+	$saving = $regular_price - $sale_price;
+	$per = $saving/$regular_price;
+	$sale_per =$per*100;
+?>
+
+	<li>
+		<a href="<?php the_permalink();?>">
+			<img src="<?php echo $product_thumbnail[0];?>" alt="<?php echo $product_thumbnail_alt;?>">
+			<div class="presentage-sale">-<?php echo round($sale_per);?>%</div>
+			<h4 class="brand-name"><?php echo $brand[0]->name;?></h4>
+			<h6 class="product-title"><?php the_title();?></h6>
+			<h6 class="product-title">
+				<span>$<?php echo $product->get_regular_price();?></span>$<?php echo $product->get_sale_price();?></h6>
+		</a>    
+	</li>
+<?php 
+endwhile; 
+
+echo '</ul></div>';
+
+endif; 
+		
+ wp_reset_query();
+
+
+}
+add_shortcode('sale-slider', 'sale_function');
