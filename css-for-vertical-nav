@@ -1,0 +1,38 @@
+.side .flex-nav-next {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    background: #fff;
+    height: 34px;
+}
+.side .flex-nav-next a {
+    position: relative!important;
+    margin: 0 auto;
+    width: 30%!important;
+    right: 0;
+    background-repeat: no-repeat;
+    background-size: 30px;
+    background-position: center;
+    background-image: url(images/arrow-up.png);
+    color: transparent!important;
+}
+.side .flex-nav-prev {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: #fff;
+    height: 34px;
+}
+.side .flex-nav-prev a {
+    position: relative!important;
+    float: none;
+    left: 0;
+    background-repeat: no-repeat;
+    background-size: 30px;
+    background-position: center;
+    margin: 0 auto;
+    width: 30%!important;
+    right: 0;
+    background-image: url(images/arrow-down.png);
+    color: transparent!important;
+}
