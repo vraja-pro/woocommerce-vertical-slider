@@ -1,0 +1,16 @@
+
+<script defer src="http://flexslider.woothemes.com/js/jquery.flexslider.js"></script>
+<script>		
+jQuery(document).ready(function(e) {
+	
+    jQuery('.flexslider2').flexslider({
+		animation: "slide",
+        direction: "vertical",
+		controlNav: false, 
+		directionNav: true,
+		smoothHeight: true
+	   
+	});
+	
+});
+	</script>
